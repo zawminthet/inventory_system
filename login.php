@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($email === "" || $password === "") {
 
         $error = "Please enter your email and password.";
-
     } else {
 
         $stmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ? LIMIT 1");
@@ -28,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute();
 
         $user = $stmt->get_result()->fetch_assoc();
+
 
         if ($user && password_verify($password, $user["password"])) {
 
@@ -38,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             header("Location: index.php");
             exit;
-
         } else {
 
             $error = "Invalid email or password.";
@@ -48,30 +47,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="stylesheet" href="css/style.css">
     <title>Login</title>
 </head>
+
 <body>
 
-<h1>Inventory Login</h1>
+    <h1>Inventory Login</h1>
 
-<?php if ($error !== "") { ?>
-    <p class="error"><?= htmlspecialchars($error) ?></p>
-<?php } ?>
+    <?php if ($error !== "") { ?>
+        <p class="error"><?= htmlspecialchars($error) ?></p>
+    <?php } ?>
 
-<form method="POST">
-    <p>
-        <label>Email</label><br>
-        <input type="email" name="email" value="<?= htmlspecialchars($email) ?>">
-    </p>
-    <p>
-        <label>Password</label><br>
-        <input type="password" name="password">
-    </p>
-    <button type="submit">Login</button>
-</form>
+    <form method="POST">
+        <p>
+            <label>Email</label><br>
+            <input type="email" name="email" value="<?= htmlspecialchars($email) ?>">
+        </p>
+        <p>
+            <label>Password</label><br>
+            <input type="password" name="password">
+        </p>
+        <button type="submit">Login</button>
+    </form>
 
 </body>
+
 </html>
